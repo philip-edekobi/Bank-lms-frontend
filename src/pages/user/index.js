@@ -4,3 +4,4 @@ export { default as UserLoans } from "./loans";
 export { default as UserLogin } from "./login";
 export { default as UserSignup } from "./signup";
 export { default as UserProfile } from "./profile";
+export {default as ErrorPage} from "../Error/Error"

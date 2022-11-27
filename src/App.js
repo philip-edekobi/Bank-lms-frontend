@@ -11,6 +11,7 @@ import {
   UserLogin,
   UserProfile,
   UserSignup,
+  ErrorPage,
 } from "./pages";
 
 import { Layout } from "./components";
@@ -37,6 +38,7 @@ function App() {
           <Route path="/signup" element={<UserSignup />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="*" element={<ErrorPage/>}></Route>
         </Routes>
       </Router>
     </>

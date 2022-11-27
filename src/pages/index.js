@@ -7,4 +7,5 @@ export {
   UserLoans,
   UserProfile,
   UserSignup,
+  ErrorPage,
 } from "./user";
