@@ -1,1 +1,8 @@
-export default function Loans() {}
+export default function Loans() {
+  return (
+    <>
+      <hr />
+      <p> user loans</p>
+    </>
+  );
+}

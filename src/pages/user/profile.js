@@ -1,1 +1,8 @@
-export default function Profile() {}
+export default function Profile() {
+  return (
+    <>
+      <hr />
+      <p> user profile</p>
+    </>
+  );
+}

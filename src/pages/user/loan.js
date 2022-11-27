@@ -1,1 +1,8 @@
-export default function Loan() {}
+export default function Loan() {
+  return (
+    <>
+      <hr />
+      <p> user loan</p>
+    </>
+  );
+}

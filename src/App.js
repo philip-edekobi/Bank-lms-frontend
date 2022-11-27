@@ -13,8 +13,34 @@ import {
   UserSignup,
 } from "./pages";
 
+import { Layout } from "./components";
+
 function App() {
-  return <></>;
+  return (
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout type="user" />}>
+            <Route path="dashboard" element={<UserDashboard />} />
+            <Route path="profile" element={<UserProfile />} />
+            <Route path="loans" element={<UserLoans />} />
+            <Route path="loan" element={<UserLoan />} />
+            <Route></Route>
+          </Route>
+
+          <Route path="/admin" element={<Layout type="admin" />}>
+            <Route path="dashboard" element={<AdminDashBoard />} />
+          </Route>
+
+          <Route path="/login" element={<UserLogin />} />
+
+          <Route path="/signup" element={<UserSignup />} />
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+        </Routes>
+      </Router>
+    </>
+  );
 }
 
 export default App;
