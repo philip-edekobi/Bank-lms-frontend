@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/layout";
-import card from "../../assets/pexels-pixabay-50987.jpg"
-import bank from "../../assets/jonathan-cooper-0O2Pp6-mOkY-unsplash.jpg"
-import banking from "../../assets/pexels-mwabonje-1820919.jpg"
+import card from "../../assets/images/pexels-pixabay-50987.jpg"
+import bank from "../../assets/images/jonathan-cooper-0O2Pp6-mOkY-unsplash.jpg"
+import banking from "../../assets/images/pexels-mwabonje-1820919.jpg"
 import { getLoanTypes } from "../../utils/requests";
 import useLoanType from "../../hooks";
 import { useEffect } from "react";
@@ -14,7 +14,9 @@ export default function Loans() {
     }
     set()
   },[setLoantype])
-  const fullLoanTypes = loantype.data.loanTypes
+  console.log(getLoanTypes())
+  console.log(loantype);
+  const fullLoanTypes = loantype?.data?.loanTypes
   const theLoanTypes = fullLoanTypes.reduce(
     (acc,loant)=> acc.includes(loant.name) ? acc : acc.concat(loant.name), []
   )

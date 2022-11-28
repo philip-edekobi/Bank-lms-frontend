@@ -1,4 +1,4 @@
-import error from "../../assets/error-404.png"
+import error from "../../assets/images/error-404.png"
 import { Flex } from "@chakra-ui/layout"
 export default function Error() {
   return (
