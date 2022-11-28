@@ -4,7 +4,7 @@ import millify from "millify";
 const Loan = ({ loan }) => {
   return (
     <Flex w="45%" py="6" my="4" mx="4" style={shadowStyle} px="4">
-      <Flex flexDir="column">
+      <Flex flexDir="column" w= "80%">
         <Box>
           <Text fontWeight="600" fontSize="xl" color="black">
             {loan.name}
