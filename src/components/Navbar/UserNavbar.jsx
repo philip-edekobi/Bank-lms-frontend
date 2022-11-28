@@ -1,4 +1,5 @@
 import { Flex, Text, Button, Box, Spacer } from "@chakra-ui/react";
+import { nanoid } from "nanoid";
 
 import logo from "../../assets/images/logo.png";
 import Navlink from "./Navlink";
@@ -16,7 +17,7 @@ export default function UserNavbar() {
 
       <Flex mx="">
         {navs.map(nav => (
-          <Navlink text={nav} />
+          <Navlink key={nanoid()} text={nav} />
         ))}
       </Flex>
 
