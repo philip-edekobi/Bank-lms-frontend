@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { userLogin } from "../../utils/requests";
+import { useNavigate } from "react-router-dom";
 
 import {
   Flex,
@@ -8,21 +10,43 @@ import {
   InputGroup,
   InputRightElement,
   Button,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 
 import logo from "../../assets/images/logo.png";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const toast = useToast();
+
   const [show, setShow] = useState(false);
-  const [accNum, setAccNum] = useState(null);
-  const [pass, setPass] = useState(null);
+  const [accNum, setAccNum] = useState("");
+  const [pass, setPass] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => setShow(!show);
   const handlePassChange = e => setPass(e.target.value);
   const handleAccChange = e => setAccNum(e.target.value);
 
-  const submit = () => {};
+  const submit = async () => {
+    setIsLoading(true);
+    const response = await userLogin(accNum, pass);
+
+    if (response.success) {
+      navigate("/dashboard");
+    } else {
+      setIsLoading(false);
+      toast({
+        status: "error",
+        title: "Failed to Log In",
+        description: response.error,
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Flex w="100%" h="100%" justify="center" align="center">
@@ -30,7 +54,6 @@ export default function Login() {
         px="8"
         py="1"
         w="50%"
-        h="60%"
         style={innerBoxStyle}
         justify="flex-start"
         flexDir="column"
@@ -79,8 +102,9 @@ export default function Login() {
             color="white"
             bgColor="#D13"
             onClick={submit}
+            w="5rem"
           >
-            <Text>Login</Text>
+            <Text>{isLoading ? <Spinner /> : "Login"}</Text>
           </Button>
         </Box>
       </Flex>
@@ -89,7 +113,7 @@ export default function Login() {
 }
 
 const innerBoxStyle = {
-  "box-shadow": "3px 4px 115px 5px rgba(78,73,73,0.72)",
-  "-webkit-box-shadow": "3px 4px 115px 5px rgba(78,73,73,0.72)",
-  "-moz-box-shadow": "3px 4px 115px 5px rgba(78,73,73,0.72)",
+  boxShadow: "3px 4px 115px 5px rgba(78,73,73,0.72)",
+  WebkitBoxShadow: "3px 4px 115px 5px rgba(78,73,73,0.72)",
+  MozBoxShadow: "3px 4px 115px 5px rgba(78,73,73,0.72)",
 };
