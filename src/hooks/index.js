@@ -1,8 +1,7 @@
-import { LoanTypeContext } from "../context";
-import { useContext } from "react";
+import { useLocation } from "react-router-dom";
 
-const useLoanType = () =>{
-    return useContext(LoanTypeContext)
+export function usePath() {
+  const location = useLocation();
+
+  return location.pathname.slice(1);
 }
-
-export default useLoanType

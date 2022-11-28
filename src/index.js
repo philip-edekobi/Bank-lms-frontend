@@ -11,11 +11,8 @@ import { LoanTypeProvider } from "./context";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <LoanTypeProvider>
     <ChakraProvider>
       <App />
     </ChakraProvider>
-    </LoanTypeProvider>
-    
   </React.StrictMode>
 );

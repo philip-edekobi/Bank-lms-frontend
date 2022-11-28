@@ -28,6 +28,8 @@ export async function getLoanTypes() {
 
     const data = await response.data;
 
-    return data;
-  } catch (error) {}
+    return data.data.loanTypes;
+  } catch (error) {
+    console.log(error);
+  }
 }
