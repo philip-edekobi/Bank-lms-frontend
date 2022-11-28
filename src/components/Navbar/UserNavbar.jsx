@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Box, Spacer } from "@chakra-ui/react";
+import { Flex, Box, Spacer } from "@chakra-ui/react";
 import { nanoid } from "nanoid";
 
 import logo from "../../assets/images/logo.png";
