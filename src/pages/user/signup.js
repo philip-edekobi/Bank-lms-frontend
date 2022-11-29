@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { userSignup } from "../../utils/requests";
 
 import {
@@ -12,6 +12,7 @@ import {
   Button,
   Spinner,
   useToast,
+  Spacer,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 
@@ -156,7 +157,7 @@ export default function Signup() {
           </InputGroup>
         </Box>
 
-        <Box mx="6" my="6">
+        <Flex mx="6" my="6" align="center">
           <Button
             isDisabled={
               !(
@@ -175,7 +176,24 @@ export default function Signup() {
           >
             <Text>{isLoading ? <Spinner /> : "Join Us"}</Text>
           </Button>
-        </Box>
+
+          <Spacer />
+
+          <Link to="/login">
+            <Text
+              sx={{
+                color: "#11F",
+                fontStyle: "italic",
+                "&:hover": {
+                  textDecor: "underline",
+                  color: "#33F",
+                },
+              }}
+            >
+              Have an account? Log In
+            </Text>
+          </Link>
+        </Flex>
       </Flex>
     </Flex>
   );

@@ -1,9 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { userUpdate, changeUserPassword } from "../../utils/requests";
+import {
+  userUpdate,
+  changeUserPassword,
+  getUserDetails,
+} from "../../utils/requests";
 
 import {
   Flex,
-  Box,
   Text,
   Button,
   Input,
@@ -14,18 +17,16 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import { useUser, useUserLoggedInStatus } from "../../hooks";
+import { useState, useEffect } from "react";
 
 import male from "../../assets/images/male.svg";
 import female from "../../assets/images/female.svg";
 
 export default function Profile() {
-  const user = useUser();
-  const isLoggedIn = useUserLoggedInStatus();
   const toast = useToast();
   const navigate = useNavigate();
 
+  const [user, setUser] = useState();
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [phone, setPhone] = useState("");
@@ -53,6 +54,14 @@ export default function Profile() {
 
   const showPersistButton = fname || lname || phone || gender || addr || dob;
   const showChangePwdButton = pass && passConf && pass === passConf;
+
+  useEffect(() => {
+    getUserDetails().then(userDet => {
+      if (userDet.error) navigate("/login");
+
+      setUser(userDet);
+    });
+  }, [navigate]);
 
   const edit = async () => {
     const response = await userUpdate({
@@ -115,10 +124,6 @@ export default function Profile() {
     }
   };
 
-  if (!isLoggedIn) {
-    navigate("/login");
-  }
-
   return (
     <>
       <hr />
@@ -127,19 +132,19 @@ export default function Profile() {
           <Flex bgColor="gray.400" w="20%" justify="center">
             <img
               alt="profile"
-              src={user.gender === "M" ? male : female}
+              src={user?.gender === "M" ? male : female}
               width={100}
               height={100}
             />
           </Flex>
 
           <Flex flexDir="column" w="80%" px="4" py="6">
-            <Box>
+            <Flex align="center">
               <Text
                 fontWeight="600"
                 fontSize="2xl"
               >{`${user?.fname} ${user?.lname}`}</Text>
-            </Box>
+            </Flex>
 
             <hr />
 
@@ -176,14 +181,13 @@ export default function Profile() {
 
               <Spacer />
 
-              <Text fontWeight="600" fontSize="xl">
-                <Input
-                  value={fname}
-                  onChange={handleFnameChange}
-                  placeholder={user?.fname}
-                  variant="filled"
-                />
-              </Text>
+              <Input
+                value={fname}
+                onChange={handleFnameChange}
+                placeholder={user?.fname}
+                variant="filled"
+                w="60%"
+              />
             </Flex>
 
             <Flex mt="2rem" align="center">
@@ -193,14 +197,13 @@ export default function Profile() {
 
               <Spacer />
 
-              <Text fontWeight="600" fontSize="xl">
-                <Input
-                  value={lname}
-                  onChange={handleLnameChange}
-                  placeholder={user?.lname}
-                  variant="filled"
-                />
-              </Text>
+              <Input
+                value={lname}
+                onChange={handleLnameChange}
+                placeholder={user?.lname}
+                variant="filled"
+                w="60%"
+              />
             </Flex>
 
             <Flex mt="2rem" align="center">
@@ -216,15 +219,14 @@ export default function Profile() {
 
               <Spacer />
 
-              <Text fontWeight="600" fontSize="xl">
-                <Input
-                  type="number"
-                  onChange={handlePhoneChange}
-                  value={phone}
-                  placeholder={user?.phone_num}
-                  variant="filled"
-                />
-              </Text>
+              <Input
+                type="number"
+                onChange={handlePhoneChange}
+                value={phone}
+                placeholder={user?.phone_num}
+                variant="filled"
+                w="60%"
+              />
             </Flex>
           </Flex>
         </Flex>
@@ -249,14 +251,13 @@ export default function Profile() {
 
             <Spacer />
 
-            <Text fontWeight="600" fontSize="xl">
-              <Input
-                placeholder={user?.gender}
-                variant="filled"
-                onChange={handleGenderChange}
-                value={gender}
-              />
-            </Text>
+            <Input
+              placeholder={user?.gender}
+              variant="filled"
+              onChange={handleGenderChange}
+              value={gender}
+              w="60%"
+            />
           </Flex>
 
           <Flex mt="1rem" align="center">
@@ -266,15 +267,14 @@ export default function Profile() {
 
             <Spacer />
 
-            <Text fontWeight="600" fontSize="xl">
-              <Input
-                placeholder={new Date(user.dob).toLocaleDateString()}
-                type="date"
-                variant="filled"
-                onChange={handleDobChange}
-                value={dob}
-              />
-            </Text>
+            <Input
+              placeholder={new Date(user?.dob).toLocaleDateString()}
+              type="date"
+              variant="filled"
+              onChange={handleDobChange}
+              value={dob}
+              w="35%"
+            />
           </Flex>
 
           <Flex mt="1rem" align="center" mb="1rem">
@@ -284,14 +284,13 @@ export default function Profile() {
 
             <Spacer />
 
-            <Text fontWeight="600" fontSize="xl">
-              <Input
-                value={addr}
-                placeholder={user?.address}
-                onChange={handleAddrChange}
-                variant="filled"
-              />
-            </Text>
+            <Input
+              value={addr}
+              placeholder={user?.address}
+              onChange={handleAddrChange}
+              variant="filled"
+              w="60%"
+            />
           </Flex>
 
           <Button
@@ -320,29 +319,27 @@ export default function Profile() {
 
             <Spacer />
 
-            <Text fontWeight="600" fontSize="xl">
-              <InputGroup>
-                <Input
-                  value={pass}
-                  onChange={handlePassChange}
-                  type={showPass ? "text" : "password"}
-                  variant="filled"
-                />
+            <InputGroup w="60%">
+              <Input
+                value={pass}
+                onChange={handlePassChange}
+                type={showPass ? "text" : "password"}
+                variant="filled"
+              />
 
-                <InputRightElement>
-                  <ViewIcon
-                    fontSize="xl"
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        color: "#aaa",
-                      },
-                    }}
-                    onClick={togglePassVisibility}
-                  />
-                </InputRightElement>
-              </InputGroup>
-            </Text>
+              <InputRightElement>
+                <ViewIcon
+                  fontSize="xl"
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      color: "#aaa",
+                    },
+                  }}
+                  onClick={togglePassVisibility}
+                />
+              </InputRightElement>
+            </InputGroup>
           </Flex>
 
           <Flex mt="1rem" align="center" mb="1rem">
@@ -352,29 +349,27 @@ export default function Profile() {
 
             <Spacer />
 
-            <Text fontWeight="600" fontSize="xl">
-              <InputGroup>
-                <Input
-                  value={passConf}
-                  onChange={handlePassConfChange}
-                  type={showPassConf ? "text" : "password"}
-                  variant="filled"
-                />
+            <InputGroup w="60%">
+              <Input
+                value={passConf}
+                onChange={handlePassConfChange}
+                type={showPassConf ? "text" : "password"}
+                variant="filled"
+              />
 
-                <InputRightElement>
-                  <ViewIcon
-                    fontSize="xl"
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        color: "#aaa",
-                      },
-                    }}
-                    onClick={togglePassConfVisibility}
-                  />
-                </InputRightElement>
-              </InputGroup>
-            </Text>
+              <InputRightElement>
+                <ViewIcon
+                  fontSize="xl"
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      color: "#aaa",
+                    },
+                  }}
+                  onClick={togglePassConfVisibility}
+                />
+              </InputRightElement>
+            </InputGroup>
           </Flex>
 
           <Button

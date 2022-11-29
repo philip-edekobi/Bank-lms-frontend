@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { userLogin } from "../../utils/requests";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import {
   Flex,
@@ -12,6 +12,7 @@ import {
   Button,
   Spinner,
   useToast,
+  Spacer,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 
@@ -96,7 +97,7 @@ export default function Login() {
           </InputGroup>
         </Box>
 
-        <Box mx="6" my="6">
+        <Flex ml="6" my="6" align="center">
           <Button
             isDisabled={!(pass?.length >= 6 && accNum)}
             color="white"
@@ -106,7 +107,24 @@ export default function Login() {
           >
             <Text>{isLoading ? <Spinner /> : "Login"}</Text>
           </Button>
-        </Box>
+
+          <Spacer />
+
+          <Link to="/signup">
+            <Text
+              sx={{
+                color: "#11F",
+                fontStyle: "italic",
+                "&:hover": {
+                  textDecor: "underline",
+                  color: "#33F",
+                },
+              }}
+            >
+              New user? Create account
+            </Text>
+          </Link>
+        </Flex>
       </Flex>
     </Flex>
   );
