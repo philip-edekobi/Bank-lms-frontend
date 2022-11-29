@@ -30,8 +30,6 @@ export default function Login() {
   const handleClick = () => setShow(!show);
   const handlePassChange = e => setPass(e.target.value);
   const handleAccChange = e => setAccNum(e.target.value);
-  const submit = () => {
-    (async () =>{
 
   const submit = async () => {
     setIsLoading(true);
