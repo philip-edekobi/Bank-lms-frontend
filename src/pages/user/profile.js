@@ -1,11 +1,123 @@
-import { Flex, Box, Text, Button, Spacer } from "@chakra-ui/react";
-import { useUser } from "../../hooks";
+import { useNavigate } from "react-router-dom";
+import { userUpdate, changeUserPassword } from "../../utils/requests";
+
+import {
+  Flex,
+  Box,
+  Text,
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Spacer,
+  Spinner,
+  useToast,
+} from "@chakra-ui/react";
+import { ViewIcon } from "@chakra-ui/icons";
+import { useState } from "react";
+import { useUser, useUserLoggedInStatus } from "../../hooks";
 
 import male from "../../assets/images/male.svg";
 import female from "../../assets/images/female.svg";
 
 export default function Profile() {
   const user = useUser();
+  const isLoggedIn = useUserLoggedInStatus();
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [addr, setAddr] = useState("");
+  const [dob, setDob] = useState("");
+  const [pass, setPass] = useState("");
+  const [passConf, setPassConf] = useState("");
+  const [editIsLoading, setEditIsLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [showPassConf, setShowPassConf] = useState(false);
+  const [passChangeIsLoading, setPassChangeIsLoading] = useState(false);
+
+  const handleFnameChange = e => setFname(e.target.value);
+  const handleLnameChange = e => setLname(e.target.value);
+  const handlePhoneChange = e => setPhone(e.target.value);
+  const handleDobChange = e => setDob(e.target.value);
+  const handleGenderChange = e => setGender(e.target.value);
+  const handleAddrChange = e => setAddr(e.target.value);
+  const handlePassChange = e => setPass(e.target.value);
+  const handlePassConfChange = e => setPassConf(e.target.value);
+
+  const togglePassVisibility = () => setShowPass(!showPass);
+  const togglePassConfVisibility = () => setShowPassConf(!showPassConf);
+
+  const showPersistButton = fname || lname || phone || gender || addr || dob;
+  const showChangePwdButton = pass && passConf && pass === passConf;
+
+  const edit = async () => {
+    const response = await userUpdate({
+      fname,
+      lname,
+      phone,
+      addr,
+      dob,
+      gender,
+    });
+
+    if (response?.success) {
+      setEditIsLoading(false);
+
+      toast({
+        status: "success",
+        title: "Details Successfully Updated",
+        duration: 4000,
+        isClosable: true,
+        position: "top",
+      });
+
+      window.location.reload();
+    } else {
+      setEditIsLoading(false);
+      toast({
+        status: "error",
+        title: "Fail ",
+        description: response?.error || "Some Error Occurred",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const changePassword = async () => {
+    setPassChangeIsLoading(true);
+    const response = await changeUserPassword(pass);
+    console.log(response);
+
+    if (response?.success) {
+      setPassChangeIsLoading(false);
+
+      toast({
+        status: "success",
+        title: "Password Change Successful",
+        duration: 4000,
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      setPassChangeIsLoading(false);
+      toast({
+        status: "error",
+        title: "Fail ",
+        description: response?.error || "Some Error Occurred",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
+
+  if (!isLoggedIn) {
+    navigate("/login");
+  }
 
   return (
     <>
@@ -24,17 +136,257 @@ export default function Profile() {
           <Flex flexDir="column" w="80%" px="4" py="6">
             <Box>
               <Text
-                fontWeight="500"
+                fontWeight="600"
                 fontSize="2xl"
-              >{`${user.fname} ${user.lname}`}</Text>
+              >{`${user?.fname} ${user?.lname}`}</Text>
             </Box>
+
             <hr />
+
+            <Flex mt="4rem" align="center" bgColor="gray.100" p="2">
+              <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+                Account Number:
+              </Text>
+              <Text fontWeight="600" fontSize="xl">
+                {user?.acc_num}
+              </Text>
+            </Flex>
+
+            <Flex my="1rem" align="center" bgColor="gray.100" p="2">
+              <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+                Balance:
+              </Text>
+              <Text fontWeight="600" fontSize="xl">
+                {`${user?.Account?.balance}`}
+              </Text>
+            </Flex>
+
+            <hr />
+
+            <Text mt="3rem" fontWeight="600">
+              Edit Details
+            </Text>
+
+            <hr />
+
+            <Flex mt="2rem" align="center">
+              <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+                First Name:
+              </Text>
+
+              <Spacer />
+
+              <Text fontWeight="600" fontSize="xl">
+                <Input
+                  value={fname}
+                  onChange={handleFnameChange}
+                  placeholder={user?.fname}
+                  variant="filled"
+                />
+              </Text>
+            </Flex>
+
+            <Flex mt="2rem" align="center">
+              <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+                Last Name:
+              </Text>
+
+              <Spacer />
+
+              <Text fontWeight="600" fontSize="xl">
+                <Input
+                  value={lname}
+                  onChange={handleLnameChange}
+                  placeholder={user?.lname}
+                  variant="filled"
+                />
+              </Text>
+            </Flex>
+
+            <Flex mt="2rem" align="center">
+              <Text
+                type="number"
+                mr="4"
+                color="gray.700"
+                fontWeight="500"
+                fontSize="xl"
+              >
+                Phone Number:
+              </Text>
+
+              <Spacer />
+
+              <Text fontWeight="600" fontSize="xl">
+                <Input
+                  type="number"
+                  onChange={handlePhoneChange}
+                  value={phone}
+                  placeholder={user?.phone_num}
+                  variant="filled"
+                />
+              </Text>
+            </Flex>
           </Flex>
         </Flex>
 
         <Spacer />
 
-        <Flex bgColor="white" h="90%" w="50%" mx="2" flexDir="column"></Flex>
+        <Flex
+          bgColor="white"
+          h="90%"
+          w="50%"
+          mx="2"
+          flexDir="column"
+          px="4rem"
+          py="6"
+        >
+          <hr />
+
+          <Flex mt="1rem" align="center">
+            <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+              Gender:
+            </Text>
+
+            <Spacer />
+
+            <Text fontWeight="600" fontSize="xl">
+              <Input
+                placeholder={user?.gender}
+                variant="filled"
+                onChange={handleGenderChange}
+                value={gender}
+              />
+            </Text>
+          </Flex>
+
+          <Flex mt="1rem" align="center">
+            <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+              Birth Date:
+            </Text>
+
+            <Spacer />
+
+            <Text fontWeight="600" fontSize="xl">
+              <Input
+                placeholder={new Date(user.dob).toLocaleDateString()}
+                type="date"
+                variant="filled"
+                onChange={handleDobChange}
+                value={dob}
+              />
+            </Text>
+          </Flex>
+
+          <Flex mt="1rem" align="center" mb="1rem">
+            <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+              Address:
+            </Text>
+
+            <Spacer />
+
+            <Text fontWeight="600" fontSize="xl">
+              <Input
+                value={addr}
+                placeholder={user?.address}
+                onChange={handleAddrChange}
+                variant="filled"
+              />
+            </Text>
+          </Flex>
+
+          <Button
+            w="15rem"
+            mx="8rem"
+            my="4"
+            colorScheme="green"
+            onClick={edit}
+            isDisabled={!showPersistButton}
+          >
+            <Text>{editIsLoading ? <Spinner /> : "Persist Changes"}</Text>
+          </Button>
+
+          <hr />
+
+          <Text mt="3rem" fontWeight="600">
+            Change Password
+          </Text>
+
+          <hr />
+
+          <Flex mt="1rem" align="center">
+            <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+              New Password:
+            </Text>
+
+            <Spacer />
+
+            <Text fontWeight="600" fontSize="xl">
+              <InputGroup>
+                <Input
+                  value={pass}
+                  onChange={handlePassChange}
+                  type={showPass ? "text" : "password"}
+                  variant="filled"
+                />
+
+                <InputRightElement>
+                  <ViewIcon
+                    fontSize="xl"
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        color: "#aaa",
+                      },
+                    }}
+                    onClick={togglePassVisibility}
+                  />
+                </InputRightElement>
+              </InputGroup>
+            </Text>
+          </Flex>
+
+          <Flex mt="1rem" align="center" mb="1rem">
+            <Text mr="4" color="gray.700" fontWeight="500" fontSize="xl">
+              Confirm Password:
+            </Text>
+
+            <Spacer />
+
+            <Text fontWeight="600" fontSize="xl">
+              <InputGroup>
+                <Input
+                  value={passConf}
+                  onChange={handlePassConfChange}
+                  type={showPassConf ? "text" : "password"}
+                  variant="filled"
+                />
+
+                <InputRightElement>
+                  <ViewIcon
+                    fontSize="xl"
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        color: "#aaa",
+                      },
+                    }}
+                    onClick={togglePassConfVisibility}
+                  />
+                </InputRightElement>
+              </InputGroup>
+            </Text>
+          </Flex>
+
+          <Button
+            colorScheme="green"
+            ml="60%"
+            w="5rem"
+            onClick={changePassword}
+            isDisabled={!showChangePwdButton}
+          >
+            <Text>{passChangeIsLoading ? <Spinner /> : "Change"}</Text>
+          </Button>
+        </Flex>
       </Flex>
     </>
   );

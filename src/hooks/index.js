@@ -18,5 +18,11 @@ export function useUser() {
     })();
   }, []);
 
-  return user;
+  return user ? user : null;
+}
+
+export function useUserLoggedInStatus() {
+  const user = useUser();
+
+  return user ? true : false;
 }

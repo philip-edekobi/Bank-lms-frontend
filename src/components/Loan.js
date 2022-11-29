@@ -4,7 +4,7 @@ import millify from "millify";
 const Loan = ({ loan }) => {
   return (
     <Flex w="45%" py="6" my="4" mx="4" style={shadowStyle} px="4">
-      <Flex flexDir="column" w= "80%">
+      <Flex flexDir="column" w="80%">
         <Box>
           <Text fontWeight="600" fontSize="xl" color="black">
             {loan.name}
@@ -40,8 +40,8 @@ const Loan = ({ loan }) => {
 export default Loan;
 
 const shadowStyle = {
-  "box-shadow": "3px 4px 115px 5px rgba(170,170,170,0.38)",
-  "-webkit-box-shadow": "3px 4px 115px 5px rgba(170,170,170,0.38)",
-  "-moz-box-shadow": "3px 4px 115px 5px rgba(170,170,170,0.38)",
-  "border-radius": "1rem",
+  boxShadow: "3px 4px 115px 5px rgba(170,170,170,0.38)",
+  WebkitBoxShadow: "3px 4px 115px 5px rgba(170,170,170,0.38)",
+  MozBoxShadow: "3px 4px 115px 5px rgba(170,170,170,0.38)",
+  borderRadius: "1rem",
 };
