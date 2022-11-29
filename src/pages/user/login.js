@@ -21,8 +21,11 @@ export default function Login() {
   const handleClick = () => setShow(!show);
   const handlePassChange = e => setPass(e.target.value);
   const handleAccChange = e => setAccNum(e.target.value);
+  const submit = () => {
+    (async () =>{
 
-  const submit = () => {};
+    })();
+  };
 
   return (
     <Flex w="100%" h="100%" justify="center" align="center">
@@ -79,6 +82,7 @@ export default function Login() {
             color="white"
             bgColor="#D13"
             onClick={submit}
+            type="submit"
           >
             <Text>Login</Text>
           </Button>
