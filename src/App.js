@@ -35,7 +35,7 @@ function App() {
           <Route path="/signup" element={<UserSignup />} />
 
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="*" element={<ErrorPage/>}></Route>
+          <Route path="*" element={<ErrorPage />}></Route>
         </Routes>
       </Router>
     </>

@@ -19,12 +19,10 @@ export default function Login() {
   const [pass, setPass] = useState(null);
 
   const handleClick = () => setShow(!show);
-  const handlePassChange = e => setPass(e.target.value);
-  const handleAccChange = e => setAccNum(e.target.value);
+  const handlePassChange = (e) => setPass(e.target.value);
+  const handleAccChange = (e) => setAccNum(e.target.value);
   const submit = () => {
-    (async () =>{
-
-    })();
+    (async () => {})();
   };
 
   return (

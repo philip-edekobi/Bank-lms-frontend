@@ -19,7 +19,7 @@ export default function Loans() {
     <>
       <hr />
       <Flex mt="4rem" flexWrap="wrap">
-        {loans.map(loan => (
+        {loans.map((loan) => (
           <Loan loan={loan} />
         ))}
       </Flex>

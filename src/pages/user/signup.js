@@ -23,12 +23,12 @@ export default function Signup() {
   const [phone, setPhone] = useState(null);
 
   const handleClick = () => setShow(!show);
-  const handleFnameChange = e => setFname(e.target.value);
-  const handleLnameChange = e => setLname(e.target.value);
-  const handleEmailChange = e => setEmail(e.target.value);
-  const handlePhoneChange = e => setPhone(e.target.value);
-  const handlePassChange = e => setPass(e.target.value);
-  const handlePassConfChange = e => setPassConf(e.target.value);
+  const handleFnameChange = (e) => setFname(e.target.value);
+  const handleLnameChange = (e) => setLname(e.target.value);
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePhoneChange = (e) => setPhone(e.target.value);
+  const handlePassChange = (e) => setPass(e.target.value);
+  const handlePassConfChange = (e) => setPassConf(e.target.value);
 
   const submit = () => {};
 
