@@ -30,6 +30,8 @@ export default function Login() {
   const handleClick = () => setShow(!show);
   const handlePassChange = e => setPass(e.target.value);
   const handleAccChange = e => setAccNum(e.target.value);
+  const submit = () => {
+    (async () =>{
 
   const submit = async () => {
     setIsLoading(true);
@@ -103,7 +105,7 @@ export default function Login() {
             color="white"
             bgColor="#D13"
             onClick={submit}
-            w="5rem"
+            type="submit"
           >
             <Text>{isLoading ? <Spinner /> : "Login"}</Text>
           </Button>
