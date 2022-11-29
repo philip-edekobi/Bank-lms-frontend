@@ -1,12 +1,10 @@
-import { Flex} from "@chakra-ui/layout"
+import { Flex } from "@chakra-ui/layout";
 const CustomerLoans = () => {
   return (
     <>
-    <Flex>
-
-    </Flex>
+      <Flex></Flex>
     </>
-  )
-}
+  );
+};
 
-export default CustomerLoans
+export default CustomerLoans;

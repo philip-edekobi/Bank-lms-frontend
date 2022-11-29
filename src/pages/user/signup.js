@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { userSignup } from "../../utils/requests";
 
 import {
   Flex,
@@ -8,19 +10,26 @@ import {
   InputGroup,
   InputRightElement,
   Button,
+  Spinner,
+  useToast,
+  Spacer,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 
 import logo from "../../assets/images/logo.png";
 
 export default function Signup() {
+  const navigate = useNavigate();
+  const toast = useToast();
+
   const [show, setShow] = useState(false);
-  const [pass, setPass] = useState(null);
+  const [pass, setPass] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
-  const [passConf, setPassConf] = useState(null);
-  const [phone, setPhone] = useState(null);
+  const [passConf, setPassConf] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => setShow(!show);
   const handleFnameChange = (e) => setFname(e.target.value);
@@ -30,7 +39,23 @@ export default function Signup() {
   const handlePassChange = (e) => setPass(e.target.value);
   const handlePassConfChange = (e) => setPassConf(e.target.value);
 
-  const submit = () => {};
+  const submit = async () => {
+    setIsLoading(true);
+    const response = await userSignup(fname, lname, email, pass, phone);
+
+    if (response.success) {
+      navigate("/profile");
+    } else {
+      setIsLoading(false);
+      toast({
+        status: "error",
+        title: "Failed to Create Account",
+        description: response.error,
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Flex w="100%" h="100%" justify="center" align="center">
@@ -132,7 +157,7 @@ export default function Signup() {
           </InputGroup>
         </Box>
 
-        <Box mx="6" my="6">
+        <Flex mx="6" my="6" align="center">
           <Button
             isDisabled={
               !(
@@ -144,20 +169,38 @@ export default function Signup() {
                 email
               )
             }
+            w="5.5rem"
             color="white"
             bgColor="#D13"
             onClick={submit}
           >
-            <Text>Join Us</Text>
+            <Text>{isLoading ? <Spinner /> : "Join Us"}</Text>
           </Button>
-        </Box>
+
+          <Spacer />
+
+          <Link to="/login">
+            <Text
+              sx={{
+                color: "#11F",
+                fontStyle: "italic",
+                "&:hover": {
+                  textDecor: "underline",
+                  color: "#33F",
+                },
+              }}
+            >
+              Have an account? Log In
+            </Text>
+          </Link>
+        </Flex>
       </Flex>
     </Flex>
   );
 }
 
 const innerBoxStyle = {
-  "box-shadow": "3px 4px 115px 5px rgba(78,73,73,0.72)",
-  "-webkit-box-shadow": "3px 4px 115px 5px rgba(78,73,73,0.72)",
-  "-moz-box-shadow": "3px 4px 115px 5px rgba(78,73,73,0.72)",
+  boxShadow: "3px 4px 115px 5px rgba(78,73,73,0.72)",
+  WebkitBoxShadow: "3px 4px 115px 5px rgba(78,73,73,0.72)",
+  MozBoxShadow: "3px 4px 115px 5px rgba(78,73,73,0.72)",
 };

@@ -3,6 +3,7 @@ import { getLoanTypes } from "../../utils/requests";
 
 import { Loan } from "../../components";
 import { Flex } from "@chakra-ui/react";
+import { nanoid } from "nanoid";
 
 export default function Loans() {
   const [loans, setLoans] = useState([]);
@@ -20,7 +21,7 @@ export default function Loans() {
       <hr />
       <Flex mt="4rem" flexWrap="wrap">
         {loans.map((loan) => (
-          <Loan loan={loan} />
+          <Loan key={nanoid()} loan={loan} />
         ))}
       </Flex>
     </>
