@@ -4,19 +4,19 @@ import millify from "millify";
 const Loan = ({ loan }) => {
   return (
     <Flex w="45%" py="6" my="4" mx="4" style={shadowStyle} px="4">
-      <Flex flexDir="column" w="80%">
-        <Box>
+      <Flex flexDir="column" w="100%">
+        <Box w="100%">
           <Text fontWeight="600" fontSize="xl" color="black">
             {loan.name}
           </Text>
         </Box>
 
-        <Box my="1.5rem">
+        <Box my="1.5rem" w="100%">
           <Text>{loan.desc}</Text>
         </Box>
 
-        <Box>
-          <Flex align="center">
+        <Box w="100%">
+          <Flex align="center" w="100%">
             <Text color="green.500" fontSize="lg" fontWeight="700">{`${millify(
               loan.amount,
               {
