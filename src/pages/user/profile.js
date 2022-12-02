@@ -1,9 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import {
-  userUpdate,
-  changeUserPassword,
-  getUserDetails,
-} from "../../utils/requests";
+import { useOutletContext } from "react-router-dom";
+import { userUpdate, changeUserPassword } from "../../utils/requests";
 
 import {
   Flex,
@@ -17,16 +13,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import male from "../../assets/images/male.svg";
 import female from "../../assets/images/female.svg";
 
 export default function Profile() {
   const toast = useToast();
-  const navigate = useNavigate();
+  const user = useOutletContext();
 
-  const [user, setUser] = useState();
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [phone, setPhone] = useState("");
@@ -54,14 +49,6 @@ export default function Profile() {
 
   const showPersistButton = fname || lname || phone || gender || addr || dob;
   const showChangePwdButton = pass && passConf && pass === passConf;
-
-  useEffect(() => {
-    getUserDetails().then(userDet => {
-      if (userDet.error) navigate("/login");
-
-      setUser(userDet);
-    });
-  }, [navigate]);
 
   const edit = async () => {
     const response = await userUpdate({
@@ -100,7 +87,6 @@ export default function Profile() {
   const changePassword = async () => {
     setPassChangeIsLoading(true);
     const response = await changeUserPassword(pass);
-    console.log(response);
 
     if (response?.success) {
       setPassChangeIsLoading(false);
@@ -162,7 +148,7 @@ export default function Profile() {
                 Balance:
               </Text>
               <Text fontWeight="600" fontSize="xl">
-                {`${user?.Account?.balance}`}
+                {`${user?.account?.balance}`}
               </Text>
             </Flex>
 

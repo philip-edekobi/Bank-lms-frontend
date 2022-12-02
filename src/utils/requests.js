@@ -42,6 +42,18 @@ export async function getLoans() {
   }
 }
 
+export async function getLoanType(id) {
+  try {
+    const response = await axios.get(`${baseUrl}/loan/types/${id}`);
+
+    const { data } = await response.data;
+
+    return data.loan;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export async function getLoanTypes() {
   try {
     const response = await axios.get(`${baseUrl}/loan/types`);
@@ -50,7 +62,6 @@ export async function getLoanTypes() {
 
     return data.loanTypes;
   } catch (error) {
-    console.log(error);
     return error.response.data;
   }
 }
@@ -150,7 +161,28 @@ export async function changeUserPassword(password) {
 
     const data = await response.data;
 
-    console.log(data);
+    return data;
+  } catch (error) {
+    return error.response?.data;
+  }
+}
+
+export async function applyForLoan({ desc, collateral, loanTypeId, dueDate }) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/loan`,
+      {
+        desc,
+        collateral,
+        loanTypeId: parseInt(loanTypeId, 10),
+        dueDate: new Date(dueDate).toJSON(),
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    const data = await response.data;
 
     return data;
   } catch (error) {
