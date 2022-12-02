@@ -1,7 +1,18 @@
-import { Flex, Button, Text, Box, Spacer } from "@chakra-ui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Flex, Button, Text, Box, Spacer, Spinner } from "@chakra-ui/react";
 import millify from "millify";
 
 const Loan = ({ loan }) => {
+  const [applyLoading, setApplyLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const apply = async () => {
+    setApplyLoading(true);
+
+    navigate(`/apply/${loan.id}`);
+  };
+
   return (
     <Flex w="45%" py="6" my="4" mx="4" style={shadowStyle} px="4">
       <Flex flexDir="column" w="100%">
@@ -27,8 +38,8 @@ const Loan = ({ loan }) => {
 
             <Spacer />
 
-            <Button color="white" bgColor="#BD1313">
-              <Text>Apply Now</Text>
+            <Button color="white" bgColor="#BD1313" onClick={apply}>
+              <Text>{applyLoading ? <Spinner /> : "Apply Now"}</Text>
             </Button>
           </Flex>
         </Box>

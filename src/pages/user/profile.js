@@ -50,14 +50,6 @@ export default function Profile() {
   const showPersistButton = fname || lname || phone || gender || addr || dob;
   const showChangePwdButton = pass && passConf && pass === passConf;
 
-  /*useEffect(() => {
-    getUserDetails().then(userDet => {
-      if (userDet.error) navigate("/login");
-
-      setUser(userDet);
-    });
-  }, [navigate]);*/
-
   const edit = async () => {
     const response = await userUpdate({
       fname,
