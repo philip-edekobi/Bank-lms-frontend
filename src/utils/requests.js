@@ -103,7 +103,7 @@ export async function userSignup(fname, lname, email, password, phone) {
       }
     );
 
-    const { data } = await response.data;
+    const data = await response.data;
 
     return data;
   } catch (error) {
