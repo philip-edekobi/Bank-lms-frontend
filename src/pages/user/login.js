@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { userLogin } from "../../utils/requests";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import queryString from "query-string";
 
 import {
   Flex,
@@ -20,6 +21,7 @@ import logo from "../../assets/images/logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
 
   const [show, setShow] = useState(false);
@@ -28,15 +30,16 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => setShow(!show);
-  const handlePassChange = (e) => setPass(e.target.value);
-  const handleAccChange = (e) => setAccNum(e.target.value);
+  const handlePassChange = e => setPass(e.target.value);
+  const handleAccChange = e => setAccNum(e.target.value);
 
   const submit = async () => {
     setIsLoading(true);
     const response = await userLogin(accNum, pass);
 
     if (response.success) {
-      navigate("/dashboard");
+      const { redirectTo } = queryString.parse(location.search);
+      navigate(redirectTo ? redirectTo : "/dashboard");
     } else {
       setIsLoading(false);
       toast({

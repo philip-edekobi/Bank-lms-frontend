@@ -41,7 +41,15 @@ export default function Loan() {
         flexDir="column"
         px="8rem"
       >
-        <Box bgColor="white" w="100%" mx="8rem" px="2rem" mt="0.5" h="100%">
+        <Box
+          bgColor="white"
+          w="100%"
+          mx="8rem"
+          px="2rem"
+          mt="4"
+          h="100%"
+          pt="4"
+        >
           <Text
             fontSize="3xl"
             mb="2rem"
@@ -84,7 +92,7 @@ export default function Loan() {
 
                 <AccordionPanel>
                   {paid.length > 0 ? (
-                    <Accordion allowMultiple defaultIndex={[0]}>
+                    <Accordion allowMultiple>
                       {paid.map(loan => (
                         <PaidLoan key={nanoid()} loan={loan} />
                       ))}
