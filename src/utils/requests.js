@@ -30,7 +30,7 @@ export async function getUserDetails() {
 
 export async function getLoans() {
   try {
-    const response = await axios.get(`${baseUrl}/loan`, {
+    const response = await axios.get(`${baseUrl}/user/loans`, {
       withCredentials: true,
     });
 
@@ -183,6 +183,23 @@ export async function applyForLoan({ desc, collateral, loanTypeId, dueDate }) {
     );
 
     const data = await response.data;
+
+    return data;
+  } catch (error) {
+    return error.response?.data;
+  }
+}
+
+export async function payforLoan() {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/user/pay`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    const data = response;
 
     return data;
   } catch (error) {
