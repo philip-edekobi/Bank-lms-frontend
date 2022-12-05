@@ -15,6 +15,7 @@ const revMap = {
   "My Loans": "loan",
   "Get Loan": "loans",
   Profile: "profile",
+  "Make Deposit": "deposit",
 };
 
 export default function Navlink({ text }) {

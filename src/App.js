@@ -12,7 +12,7 @@ import {
   ErrorPage,
 } from "./pages";
 
-import { Layout, LoanApplyForm } from "./components";
+import { Layout, LoanApplyForm, DepositForm } from "./components";
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
             <Route path="loans" element={<UserLoans />} />
             <Route path="loan" element={<UserLoan />} />
             <Route path="apply/:loanTypeId" element={<LoanApplyForm />} />
+            <Route path="deposit" element={<DepositForm />} />
           </Route>
 
           <Route path="/admin" element={<Layout type="admin" />}>

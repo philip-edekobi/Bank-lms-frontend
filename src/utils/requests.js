@@ -206,3 +206,23 @@ export async function payLoan() {
     return error.response?.data;
   }
 }
+
+export async function makeDeposit(deposit) {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/user/deposit`,
+      {
+        deposit: parseInt(deposit, 10),
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    const data = await response.data;
+
+    return data;
+  } catch (error) {
+    return error.response?.data;
+  }
+}

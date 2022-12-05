@@ -36,7 +36,7 @@ export default function Loan() {
       <hr />
       <Flex
         bgColor="gray.300"
-        h="100%"
+        minH="100%"
         align="center"
         flexDir="column"
         px="8rem"
@@ -83,8 +83,12 @@ export default function Loan() {
                 </AccordionButton>
 
                 <AccordionPanel>
-                  {paid ? (
-                    paid.map(loan => <PaidLoan key={nanoid()} loan={loan} />)
+                  {paid.length > 0 ? (
+                    <Accordion allowMultiple defaultIndex={[0]}>
+                      {paid.map(loan => (
+                        <PaidLoan key={nanoid()} loan={loan} />
+                      ))}
+                    </Accordion>
                   ) : (
                     <Text color="gray.500">You have no settled loans.</Text>
                   )}

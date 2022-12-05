@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import logo from "../../assets/images/logo.png";
 import Navlink from "./Navlink";
 
-const navs = ["Home", "Get Loan", "My Loans", "Profile"];
+const navs = ["Home", "Get Loan", "My Loans", "Profile", "Make Deposit"];
 
 export default function UserNavbar() {
   return (

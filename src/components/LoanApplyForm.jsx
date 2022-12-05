@@ -58,7 +58,7 @@ export default function LoanApplyForm() {
       dueDate,
     });
 
-    if (response.error) {
+    if (response?.error) {
       setIsLoading(false);
 
       toast({
