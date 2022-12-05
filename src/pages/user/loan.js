@@ -1,112 +1,99 @@
 import { useEffect, useState } from "react";
-import { getLoans, payforLoan } from "../../utils/requests";
-import { Flex, Text } from "@chakra-ui/layout";
-import { CustomerLoans, CustomerPaidLoans } from "../../components";
-import { ChevronUpIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { getLoans } from "../../utils/requests";
+import { UnpaidLoan, PaidLoan } from "../../components";
+
+import {
+  Flex,
+  Text,
+  Box,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from "@chakra-ui/react";
+
 import { useOutletContext } from "react-router-dom";
 import { nanoid } from "nanoid";
-import { useToast } from "@chakra-ui/react";
+
 export default function Loan() {
   const [loans, setLoans] = useState([]);
-  const [arrow, setArrow] = useState(true);
-  const toast = useToast();
-  const [IsLoading, setLoading] = useState(false);
+
   useEffect(() => {
     (async () => {
-      const loans = await getLoans();
-      setLoans(loans.loans);
+      const response = await getLoans();
+      setLoans(response.loans);
     })();
   }, []);
-  const pay = async () => {
-    setLoading(true);
-    const response = await payforLoan();
-    console.log(response);
-    if (response?.data?.success) {
-      setLoading(false);
-      toast({
-        status: "success",
-        title: "Payed Loan Succesfully",
-        description: "Success",
-        duration: 4000,
-        isClosable: true,
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    } else {
-      setLoading(false);
-      toast({
-        status: "error",
-        title: "Insufficient Funds",
-        description: response.error,
-        duration: 4000,
-        isClosable: true,
-      });
-      // window.location.reload();
-    }
-  };
-  // console.log(loans);
+
   const user = useOutletContext();
-  // console.log(user);
-  const pending = loans.filter((val) => val?.isSettled === false);
-  const paid = loans.filter((val) => val?.isSettled === true);
-  // console.log(pending);
-  // const pay = async ()=>{
-  //   const response = await pa
-  // }
+
+  const pending = loans.find(val => val?.isSettled === false);
+  const paid = loans.filter(val => val?.isSettled === true);
+
   return (
     <>
-      <>
-        <hr />
-        <Flex flexDir="column" p="0 0 0 20px ">
-          <Text fontSize="64px">{`${user?.lname} ${user?.fname}`}</Text>
-          <Text fontSize="32px">Account Number: {user?.acc_num}</Text>
-        </Flex>
-        <Flex flexDir="column" p="0 0 0 20px">
-          <Text fontSize="64px" color="#F00905">
-            Current Loan
-          </Text>
-        </Flex>
-        <Flex flexDir="row">
-          {pending.length !== 0 ? (
-            pending.map((pending) => (
-              <CustomerLoans
-                key={nanoid()}
-                pending={pending}
-                IsLoading={IsLoading}
-                pay={pay}
-              />
-            ))
-          ) : (
-            <Text>You do not have any Current Loans</Text>
-          )}
-        </Flex>
-        <Flex>
+      <hr />
+      <Flex
+        bgColor="gray.300"
+        h="100%"
+        align="center"
+        flexDir="column"
+        px="8rem"
+      >
+        <Box bgColor="white" w="100%" mx="8rem" px="2rem" mt="0.5" h="100%">
           <Text
-            onClick={() => {
-              setArrow(!arrow);
-            }}
-            cursor="pointer"
-            fontSize="60px"
-            color="#F00905"
-            p="0 0 20px 20px"
-          >
-            Previous Loans
-            {arrow === true ? <ChevronUpIcon /> : <ChevronDownIcon />}
-          </Text>
-        </Flex>
-        <Flex flexWrap="wrap">
-          {arrow === false ? (
-            paid.length !== 0 ? (
-              paid.map((paid) => (
-                <CustomerPaidLoans key={nanoid()} paid={paid} />
-              ))
-            ) : (
-              <Text>No Previous Loans</Text>
-            )
-          ) : null}
-        </Flex>
-      </>
+            fontSize="3xl"
+            mb="2rem"
+          >{`${user?.fname} ${user?.lname}`}</Text>
+
+          <Box>
+            <Accordion allowMultiple defaultIndex={[0]}>
+              <AccordionItem>
+                <AccordionButton fontSize="2xl">
+                  <Box flex="1" textAlign="left">
+                    <Text> Outstanding</Text>
+                  </Box>
+
+                  <AccordionIcon />
+                </AccordionButton>
+
+                <AccordionPanel>
+                  {pending ? (
+                    <UnpaidLoan loan={pending} />
+                  ) : (
+                    <Text color="gray.500">
+                      You have no outstanding loan repayments to make.
+                    </Text>
+                  )}
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </Box>
+
+          <Box mt="4rem">
+            <Accordion allowMultiple defaultIndex={[0]}>
+              <AccordionItem>
+                <AccordionButton fontSize="2xl">
+                  <Box flex="1" textAlign="left">
+                    <Text>Settled</Text>
+                  </Box>
+
+                  <AccordionIcon />
+                </AccordionButton>
+
+                <AccordionPanel>
+                  {paid ? (
+                    paid.map(loan => <PaidLoan key={nanoid()} loan={loan} />)
+                  ) : (
+                    <Text color="gray.500">You have no settled loans.</Text>
+                  )}
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
+          </Box>
+        </Box>
+      </Flex>
     </>
   );
 }

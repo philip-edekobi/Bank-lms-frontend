@@ -190,7 +190,7 @@ export async function applyForLoan({ desc, collateral, loanTypeId, dueDate }) {
   }
 }
 
-export async function payforLoan() {
+export async function payLoan() {
   try {
     const response = await axios.post(
       `${baseUrl}/user/pay`,
@@ -199,7 +199,7 @@ export async function payforLoan() {
         withCredentials: true,
       }
     );
-    const data = response;
+    const data = await response.data;
 
     return data;
   } catch (error) {
