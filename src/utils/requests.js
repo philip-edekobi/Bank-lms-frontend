@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:4000/api/v1";
+const baseUrl =
+  process.env.REACT_APP_BASE_URL || "http://localhost:4000/api/v1";
 
 export async function getUsers() {
   try {
